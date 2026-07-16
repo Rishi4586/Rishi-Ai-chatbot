@@ -753,7 +753,7 @@ const loadChat = async (chatId) => {
     renderChatList();
 
     try {
-        const data = await apiFetch(`/chat/${chatId}`, { authMode: "required" });
+        const data = await apiFetch(`/api/chat/${chatId}`, { authMode: "required" });
         state.messages = data.chat.messages || [];
         state.currentChatId = data.chat.chatId;
         renderMessages();
@@ -778,7 +778,7 @@ const refreshChats = async ({ autoSelect = true } = {}) => {
     renderChatList();
 
     try {
-        const data = await apiFetch("/chats", { authMode: "required" });
+        const data = await apiFetch("/api/chats", { authMode: "required" });
         state.chatList = sortChats(data.chats || []);
         renderChatList();
 
@@ -833,7 +833,7 @@ const createNewChat = async () => {
     }
 
     try {
-        const data = await apiFetch("/chat/new", {
+        const data = await apiFetch("/api/chat/new", {
             method: "POST",
             body: JSON.stringify({}),
             authMode: "required"
@@ -916,7 +916,7 @@ const handleFileSelection = async () => {
         updateGuestUsageUI();
 
         const dataUrl = await readFileAsDataUrl(file);
-        const payload = await apiFetch("/upload", {
+        const payload = await apiFetch("/api/upload", {
             method: "POST",
             authMode: "optional",
             body: JSON.stringify({
@@ -987,7 +987,7 @@ const handleFormSubmit = async (event) => {
     state.requestController = requestController;
 
     try {
-        const payload = await apiFetch("/chat", {
+        const payload = await apiFetch("/api/chat", {
             method: "POST",
             authMode: "optional",
             signal: requestController.signal,
@@ -1096,7 +1096,7 @@ const handleRenameChatSubmit = async (event) => {
     renameChatSaveBtn.textContent = "Saving...";
 
     try {
-        const data = await apiFetch(`/chat/${chatId}`, {
+        const data = await apiFetch(`/api/chat/${chatId}`, {
             method: "PATCH",
             body: JSON.stringify({ title: nextTitle }),
             authMode: "required"
@@ -1122,7 +1122,7 @@ const handleDeleteChatConfirm = async () => {
     deleteChatConfirmBtn.textContent = "Deleting...";
 
     try {
-        await apiFetch(`/chat/${chatId}`, {
+        await apiFetch(`/api/chat/${chatId}`, {
             method: "DELETE",
             authMode: "required"
         });
